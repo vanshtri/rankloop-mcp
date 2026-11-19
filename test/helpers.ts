@@ -1,3 +1,4 @@
+import { mock } from "node:test";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -22,4 +23,14 @@ export function tempCtx(env: Record<string, string> = {}) {
       rmSync(home, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
     },
   };
+}
+
+type Reply = { status?: number; body?: unknown };
+
+/** Replace global fetch. handler gets the parsed URL and init; return status + JSON body (or a raw string). */
+export function stubFetch(handler: (url: URL, init: RequestInit) => Reply) {
+  return mock.method(globalThis, "fetch", async (input: string | URL | Request, init: RequestInit = {}) => {
+    const { status = 200, body = {} } = handler(new URL(input instanceof Request ? input.url : String(input)), init);
+    return new Response(typeof body === "string" ? body : JSON.stringify(body), { status });
+  });
 }
