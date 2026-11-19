@@ -80,10 +80,15 @@ export async function runRealtime(token: TokenSource, propertyId: string, q: { d
 
 type Field = { apiName: string; uiName: string; category?: string };
 
+/** apiNames grouped by category: full metadata is ~65KB, too big for an agent's context. */
 export async function getMetadata(token: TokenSource, propertyId: string) {
   const r = await requestJson<{ dimensions?: Field[]; metrics?: Field[] }>(`${DATA}/${prop(propertyId)}/metadata`, { token: await token() });
-  const pick = ({ apiName, uiName, category }: Field) => ({ apiName, uiName, category });
-  return { dimensions: (r.dimensions ?? []).map(pick), metrics: (r.metrics ?? []).map(pick) };
+  const group = (fields: Field[] = []) => {
+    const out: Record<string, string[]> = {};
+    for (const f of fields) (out[f.category ?? "Other"] ??= []).push(f.apiName);
+    return out;
+  };
+  return { dimensions: group(r.dimensions), metrics: group(r.metrics) };
 }
 
 export async function listKeyEvents(token: TokenSource, propertyId: string): Promise<unknown[]> {

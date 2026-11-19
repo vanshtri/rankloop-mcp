@@ -42,7 +42,7 @@ Node.js 22.18 or newer.
 3. GA4 → Admin → Property access management → add the service-account email as **Viewer** (**Editor** if you enable writes).
 4. Set `GOOGLE_APPLICATION_CREDENTIALS` to the JSON file path in the MCP config below.
 
-Optional: create an API key and set `PAGESPEED_API_KEY` for a higher PageSpeed quota.
+For `pagespeed`: create an API key (APIs & Services → Credentials → API key) and set `PAGESPEED_API_KEY`. Calls without a key share one global Google quota and usually fail with 429.
 
 ## 2. Add to your MCP client
 
@@ -58,7 +58,7 @@ Claude Desktop / Cursor (`mcpServers` in the client's config file):
     "rankloop-mcp": {
       "command": "npx",
       "args": ["-y", "rankloop-mcp"],
-      "env": { "PAGESPEED_API_KEY": "optional" }
+      "env": { "PAGESPEED_API_KEY": "your-api-key" }
     }
   }
 }
@@ -73,7 +73,7 @@ Then ask: *"Run setup_check, then show my top 20 queries in Search Console for t
 |---|---|---|
 | `GOOGLE_APPLICATION_CREDENTIALS` | unset | Service-account JSON path (takes precedence over OAuth) |
 | `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` | unset | Only needed when running `rankloop-mcp auth` |
-| `PAGESPEED_API_KEY` | unset | Higher PageSpeed Insights quota |
+| `PAGESPEED_API_KEY` | unset | Needed for `pagespeed` in practice (keyless calls share a global quota) |
 | `RANKLOOP_MCP_ALLOW_WRITES` | `false` | Allow sitemap submit/delete and GA4 creates |
 | `RANKLOOP_MCP_HOME` | `~/.rankloop-mcp` | Token and local database location |
 

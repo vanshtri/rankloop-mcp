@@ -51,7 +51,11 @@ function hint(status: number, u: URL): string {
     ? "ga4"
     : u.host.includes("searchconsole") || u.pathname.startsWith("/webmasters")
       ? "gsc"
-      : "other";
+      : u.pathname.startsWith("/pagespeedonline")
+        ? "psi"
+        : "other";
+  if (status === 429 && api === "psi")
+    return ". Fix: set PAGESPEED_API_KEY (Cloud Console → APIs & Services → Credentials → API key). Calls without a key share one global quota.";
   if (status === 401) return ". Fix: re-run `npx rankloop-mcp auth` (token expired or revoked).";
   if (status === 403 && api === "ga4")
     return ". Fix: give your Google account or service-account email Viewer access on the GA4 property (Editor for writes).";

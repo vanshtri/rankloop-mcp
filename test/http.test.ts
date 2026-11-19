@@ -49,6 +49,11 @@ test("403 from Search Console carries a fix hint", async () => {
   );
 });
 
+test("429 from PageSpeed points at PAGESPEED_API_KEY", async () => {
+  stubFetch(() => ({ status: 429, body: { error: { message: "Quota exceeded" } } }));
+  await assert.rejects(requestJson("https://www.googleapis.com/pagespeedonline/v5/runPagespeed"), /Fix: set PAGESPEED_API_KEY/);
+});
+
 test("403 from GA4 carries a GA4 fix hint", async () => {
   stubFetch(() => ({ status: 403, body: { error: { message: "denied" } } }));
   await assert.rejects(requestJson("https://analyticsdata.googleapis.com/v1beta/properties/1:runReport"), /Viewer access on the GA4 property/);

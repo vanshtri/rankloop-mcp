@@ -74,11 +74,23 @@ test("ga4_admin without propertyId names the missing field", () =>
     assert.match(text(r), /propertyId is required/);
   }));
 
-test("ga4_report metadata mode hits the metadata endpoint", () =>
+test("ga4_report metadata mode returns apiNames grouped by category", () =>
   withClient({}, async (client) => {
-    const f = stubFetch(() => ({ body: { dimensions: [{ apiName: "landingPage", uiName: "Landing page", category: "Page" }], metrics: [] } }));
+    const f = stubFetch(() => ({
+      body: {
+        dimensions: [
+          { apiName: "landingPage", uiName: "Landing page", category: "Page" },
+          { apiName: "pagePath", uiName: "Page path", category: "Page" },
+          { apiName: "customEvent:plan", uiName: "Plan" },
+        ],
+        metrics: [{ apiName: "sessions", uiName: "Sessions", category: "Session" }],
+      },
+    }));
     const r = await client.callTool({ name: "ga4_report", arguments: { propertyId: "123", mode: "metadata" } });
-    assert.deepEqual(JSON.parse(text(r)).dimensions, [{ apiName: "landingPage", uiName: "Landing page", category: "Page" }]);
+    assert.deepEqual(JSON.parse(text(r)), {
+      dimensions: { Page: ["landingPage", "pagePath"], Other: ["customEvent:plan"] },
+      metrics: { Session: ["sessions"] },
+    });
     assert.equal(String(f.mock.calls[0].arguments[0]), "https://analyticsdata.googleapis.com/v1beta/properties/123/metadata");
   }));
 
