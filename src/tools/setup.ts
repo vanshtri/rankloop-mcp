@@ -15,7 +15,7 @@ export async function setupReport(ctx: Ctx): Promise<Record<string, unknown>> {
     optional: { PAGESPEED_API_KEY: Boolean(ctx.config.pagespeedKey) },
   };
   if (mode === "none") {
-    report.next = "Run `npx seo-mcp auth` (OAuth) or set GOOGLE_APPLICATION_CREDENTIALS (service account).";
+    report.next = "Run `npx rankloop-mcp auth` (OAuth) or set GOOGLE_APPLICATION_CREDENTIALS (service account).";
     return report;
   }
   report.searchConsoleSites = await gsc.listSites(ctx.token).catch((e: Error) => ({ error: e.message }));

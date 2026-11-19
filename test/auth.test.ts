@@ -9,7 +9,7 @@ const WRITE = ["https://www.googleapis.com/auth/webmasters", "https://www.google
 
 test("read-only scopes unless writes are enabled", () => {
   assert.deepEqual(scopesFor(loadConfig({})), READ);
-  assert.deepEqual(scopesFor(loadConfig({ SEO_MCP_ALLOW_WRITES: "true" })), WRITE);
+  assert.deepEqual(scopesFor(loadConfig({ RANKLOOP_MCP_ALLOW_WRITES: "true" })), WRITE);
 });
 
 test("auth mode: none, then oauth once a token is saved; service account wins", () => {
@@ -28,7 +28,7 @@ test("auth mode: none, then oauth once a token is saved; service account wins", 
 });
 
 test("oauth token with read-only scopes has no write scopes", () => {
-  const ctx = tempCtx({ SEO_MCP_ALLOW_WRITES: "true" });
+  const ctx = tempCtx({ RANKLOOP_MCP_ALLOW_WRITES: "true" });
   try {
     saveToken(ctx.config, { client_id: "id", client_secret: "s", refresh_token: "r", scope: READ.join(" ") });
     assert.equal(hasWriteScopes(ctx.config), false);
@@ -38,14 +38,14 @@ test("oauth token with read-only scopes has no write scopes", () => {
 });
 
 test("service account scopes follow the writes flag", () => {
-  assert.equal(hasWriteScopes(loadConfig({ GOOGLE_APPLICATION_CREDENTIALS: "/sa.json", SEO_MCP_ALLOW_WRITES: "true" })), true);
+  assert.equal(hasWriteScopes(loadConfig({ GOOGLE_APPLICATION_CREDENTIALS: "/sa.json", RANKLOOP_MCP_ALLOW_WRITES: "true" })), true);
   assert.equal(hasWriteScopes(loadConfig({ GOOGLE_APPLICATION_CREDENTIALS: "/sa.json" })), false);
 });
 
 test("token source without credentials explains the fix", async () => {
   const ctx = tempCtx();
   try {
-    await assert.rejects(makeTokenSource(ctx.config)(), /npx seo-mcp auth/);
+    await assert.rejects(makeTokenSource(ctx.config)(), /npx rankloop-mcp auth/);
   } finally {
     ctx.cleanup();
   }

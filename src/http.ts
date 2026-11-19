@@ -21,7 +21,7 @@ export async function requestJson<T>(url: string, opts: RequestOptions = {}): Pr
   if (opts.body !== undefined) headers["content-type"] = "application/json";
   const method = opts.method ?? (opts.body === undefined ? "GET" : "POST");
   const body = opts.body === undefined ? undefined : JSON.stringify(opts.body);
-  const baseDelay = Number(process.env.SEO_MCP_RETRY_BASE_MS ?? 500);
+  const baseDelay = Number(process.env.RANKLOOP_MCP_RETRY_BASE_MS ?? 500);
 
   for (let attempt = 0; ; attempt++) {
     const res = await fetch(u, { method, headers, body, signal: AbortSignal.timeout(120_000) });
@@ -52,7 +52,7 @@ function hint(status: number, u: URL): string {
     : u.host.includes("searchconsole") || u.pathname.startsWith("/webmasters")
       ? "gsc"
       : "other";
-  if (status === 401) return ". Fix: re-run `npx seo-mcp auth` (token expired or revoked).";
+  if (status === 401) return ". Fix: re-run `npx rankloop-mcp auth` (token expired or revoked).";
   if (status === 403 && api === "ga4")
     return ". Fix: give your Google account or service-account email Viewer access on the GA4 property (Editor for writes).";
   if (status === 403 && api === "gsc")

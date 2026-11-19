@@ -1,11 +1,11 @@
 {
-  "name": "seo-mcp",
+  "name": "rankloop-mcp",
   "version": "0.1.0",
   "description": "MCP server for Google Search Console, GA4 and PageSpeed: SEO and AEO audits, fixes and research",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "seo-mcp": "dist/index.js"
+    "rankloop-mcp": "dist/index.js"
   },
   "files": [
     "dist"

@@ -1,4 +1,4 @@
-# seo-mcp
+# rankloop-mcp
 
 MCP server that gives Claude Code, Claude Desktop, Cursor and other MCP clients direct access to **Google Search Console**, **GA4** and **PageSpeed Insights**.
 
@@ -32,9 +32,9 @@ Node.js 22.18 or newer.
 3. Credentials → Create credentials → OAuth client ID → **Desktop app**. Copy the client ID and secret.
 4. Run once (PowerShell shown; use `export` on macOS/Linux):
    ```powershell
-   $env:GOOGLE_OAUTH_CLIENT_ID="..."; $env:GOOGLE_OAUTH_CLIENT_SECRET="..."; npx -y seo-mcp auth
+   $env:GOOGLE_OAUTH_CLIENT_ID="..."; $env:GOOGLE_OAUTH_CLIENT_SECRET="..."; npx -y rankloop-mcp auth
    ```
-   A browser opens; approve. The token is saved to `~/.seo-mcp/token.json`.
+   A browser opens; approve. The token is saved to `~/.rankloop-mcp/token.json`.
 
 **Option B: Service account (servers, CI, agencies)**
 1. IAM & Admin → Service accounts → create one → Keys → Add key → JSON.
@@ -48,16 +48,16 @@ Optional: create an API key and set `PAGESPEED_API_KEY` for a higher PageSpeed q
 
 Claude Code:
 ```bash
-claude mcp add --transport stdio seo-mcp -- npx -y seo-mcp
+claude mcp add --transport stdio rankloop-mcp -- npx -y rankloop-mcp
 ```
 
 Claude Desktop / Cursor (`mcpServers` in the client's config file):
 ```json
 {
   "mcpServers": {
-    "seo-mcp": {
+    "rankloop-mcp": {
       "command": "npx",
-      "args": ["-y", "seo-mcp"],
+      "args": ["-y", "rankloop-mcp"],
       "env": { "PAGESPEED_API_KEY": "optional" }
     }
   }
@@ -72,14 +72,14 @@ Then ask: *"Run setup_check, then show my top 20 queries in Search Console for t
 | Variable | Default | Purpose |
 |---|---|---|
 | `GOOGLE_APPLICATION_CREDENTIALS` | unset | Service-account JSON path (takes precedence over OAuth) |
-| `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` | unset | Only needed when running `seo-mcp auth` |
+| `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` | unset | Only needed when running `rankloop-mcp auth` |
 | `PAGESPEED_API_KEY` | unset | Higher PageSpeed Insights quota |
-| `SEO_MCP_ALLOW_WRITES` | `false` | Allow sitemap submit/delete and GA4 creates |
-| `SEO_MCP_HOME` | `~/.seo-mcp` | Token and local database location |
+| `RANKLOOP_MCP_ALLOW_WRITES` | `false` | Allow sitemap submit/delete and GA4 creates |
+| `RANKLOOP_MCP_HOME` | `~/.rankloop-mcp` | Token and local database location |
 
 ## Safety
 
-- Read-only by default. Writes need `SEO_MCP_ALLOW_WRITES=true` **and** a token with write scopes (re-run `seo-mcp auth` after enabling).
+- Read-only by default. Writes need `RANKLOOP_MCP_ALLOW_WRITES=true` **and** a token with write scopes (re-run `rankloop-mcp auth` after enabling).
 - Every write defaults to `dryRun: true` and shows what would change.
 - Credentials stay on your machine. Nothing is sent anywhere except Google's APIs.
 

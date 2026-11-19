@@ -28,14 +28,14 @@ test("need returns the value or names the missing field", () => {
 test("requireWrites blocks when writes are off", () => {
   const ctx = tempCtx();
   try {
-    assert.throws(() => requireWrites(ctx.config), /SEO_MCP_ALLOW_WRITES=true/);
+    assert.throws(() => requireWrites(ctx.config), /RANKLOOP_MCP_ALLOW_WRITES=true/);
   } finally {
     ctx.cleanup();
   }
 });
 
 test("requireWrites blocks when the token has read-only scopes", () => {
-  const ctx = tempCtx({ SEO_MCP_ALLOW_WRITES: "true" });
+  const ctx = tempCtx({ RANKLOOP_MCP_ALLOW_WRITES: "true" });
   try {
     saveToken(ctx.config, {
       client_id: "id",
@@ -43,14 +43,14 @@ test("requireWrites blocks when the token has read-only scopes", () => {
       refresh_token: "r",
       scope: "https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/analytics.readonly",
     });
-    assert.throws(() => requireWrites(ctx.config), /re-run `npx seo-mcp auth`/);
+    assert.throws(() => requireWrites(ctx.config), /re-run `npx rankloop-mcp auth`/);
   } finally {
     ctx.cleanup();
   }
 });
 
 test("requireWrites passes with writes on and write scopes", () => {
-  const ctx = tempCtx({ SEO_MCP_ALLOW_WRITES: "true", GOOGLE_APPLICATION_CREDENTIALS: "/sa.json" });
+  const ctx = tempCtx({ RANKLOOP_MCP_ALLOW_WRITES: "true", GOOGLE_APPLICATION_CREDENTIALS: "/sa.json" });
   try {
     assert.doesNotThrow(() => requireWrites(ctx.config));
   } finally {

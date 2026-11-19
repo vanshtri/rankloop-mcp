@@ -19,9 +19,9 @@ export function need<T>(value: T | undefined, name: string): T {
 
 export function requireWrites(config: Config): void {
   if (!config.allowWrites) {
-    throw new Error("Writes are disabled. Fix: set SEO_MCP_ALLOW_WRITES=true in this MCP server's env.");
+    throw new Error("Writes are disabled. Fix: set RANKLOOP_MCP_ALLOW_WRITES=true in this MCP server's env.");
   }
   if (!hasWriteScopes(config)) {
-    throw new Error("Your Google token has read-only scopes. Fix: with SEO_MCP_ALLOW_WRITES=true set, re-run `npx seo-mcp auth`.");
+    throw new Error("Your Google token has read-only scopes. Fix: with RANKLOOP_MCP_ALLOW_WRITES=true set, re-run `npx rankloop-mcp auth`.");
   }
 }

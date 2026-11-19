@@ -12,7 +12,7 @@ const { version } = createRequire(import.meta.url)("../package.json") as { versi
 export type Ctx = { config: Config; db: DatabaseSync; token: TokenSource };
 
 export function createServer(ctx: Ctx): McpServer {
-  const server = new McpServer({ name: "seo-mcp", version });
+  const server = new McpServer({ name: "rankloop-mcp", version });
   registerSetupTools(server, ctx);
   registerGoogleTools(server, ctx);
   return server;

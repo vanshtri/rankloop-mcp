@@ -39,11 +39,11 @@ test("gsc_sitemaps submit is blocked when writes are off, and makes no request",
       arguments: { siteUrl: "sc-domain:ex.com", action: "submit", feedpath: "https://ex.com/sitemap.xml" },
     });
     assert.equal(r.isError, true);
-    assert.match(text(r), /SEO_MCP_ALLOW_WRITES=true/);
+    assert.match(text(r), /RANKLOOP_MCP_ALLOW_WRITES=true/);
     assert.equal(f.mock.callCount(), 0);
   }));
 
-const WRITES = { SEO_MCP_ALLOW_WRITES: "true", GOOGLE_APPLICATION_CREDENTIALS: "/sa.json" };
+const WRITES = { RANKLOOP_MCP_ALLOW_WRITES: "true", GOOGLE_APPLICATION_CREDENTIALS: "/sa.json" };
 
 test("gsc_sitemaps submit defaults to dryRun", () =>
   withClient(WRITES, async (client) => {

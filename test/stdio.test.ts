@@ -7,13 +7,13 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 test("the CLI serves MCP over stdio", async () => {
-  const home = mkdtempSync(join(tmpdir(), "seo-mcp-"));
+  const home = mkdtempSync(join(tmpdir(), "rankloop-mcp-"));
   const client = new Client({ name: "test", version: "0" });
   await client.connect(
     new StdioClientTransport({
       command: process.execPath,
       args: ["src/index.ts"],
-      env: { ...(process.env as Record<string, string>), SEO_MCP_HOME: home },
+      env: { ...(process.env as Record<string, string>), RANKLOOP_MCP_HOME: home },
     }),
   );
   try {

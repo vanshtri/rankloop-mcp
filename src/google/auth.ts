@@ -73,12 +73,12 @@ export function makeTokenSource(config: Config): TokenSource {
         get = async () => (await client.getAccessToken()).token;
       } else {
         throw new Error(
-          "No Google credentials. Fix: run `npx seo-mcp auth` (OAuth) or set GOOGLE_APPLICATION_CREDENTIALS to a service-account JSON file.",
+          "No Google credentials. Fix: run `npx rankloop-mcp auth` (OAuth) or set GOOGLE_APPLICATION_CREDENTIALS to a service-account JSON file.",
         );
       }
     }
     const token = await get();
-    if (!token) throw new Error("Google returned no access token. Fix: re-run `npx seo-mcp auth`.");
+    if (!token) throw new Error("Google returned no access token. Fix: re-run `npx rankloop-mcp auth`.");
     return token;
   };
 }
@@ -89,7 +89,7 @@ export async function runAuthFlow(config: Config, env: NodeJS.ProcessEnv = proce
   const clientSecret = env.GOOGLE_OAUTH_CLIENT_SECRET;
   if (!clientId || !clientSecret) {
     throw new Error(
-      "Set GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET (OAuth client type: Desktop app) before running `seo-mcp auth`.",
+      "Set GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET (OAuth client type: Desktop app) before running `rankloop-mcp auth`.",
     );
   }
   const server = createServer();
@@ -107,18 +107,18 @@ export async function runAuthFlow(config: Config, env: NodeJS.ProcessEnv = proce
         res.end(); // favicon and other stray requests
         return;
       }
-      res.end(code ? "seo-mcp is authorized. You can close this tab." : "seo-mcp authorization failed. Check the terminal.");
+      res.end(code ? "rankloop-mcp is authorized. You can close this tab." : "rankloop-mcp authorization failed. Check the terminal.");
       server.close();
       if (code) resolve(code);
       else reject(new Error(`Authorization failed: ${error}`));
     });
-    console.error(`Open this URL to authorize seo-mcp:\n\n${authUrl}\n`);
+    console.error(`Open this URL to authorize rankloop-mcp:\n\n${authUrl}\n`);
     openBrowser(authUrl);
   });
 
   const { tokens } = await client.getToken(code);
   if (!tokens.refresh_token) {
-    throw new Error("Google returned no refresh token. Fix: remove seo-mcp at https://myaccount.google.com/permissions and run auth again.");
+    throw new Error("Google returned no refresh token. Fix: remove rankloop-mcp at https://myaccount.google.com/permissions and run auth again.");
   }
   const scope = tokens.scope ?? scopesFor(config).join(" ");
   saveToken(config, { client_id: clientId, client_secret: clientSecret, refresh_token: tokens.refresh_token, scope });

@@ -6,7 +6,7 @@ import { loadConfig } from "../src/config.ts";
 
 test("defaults", () => {
   assert.deepEqual(loadConfig({}), {
-    home: join(homedir(), ".seo-mcp"),
+    home: join(homedir(), ".rankloop-mcp"),
     allowWrites: false,
     serviceAccountFile: undefined,
     pagespeedKey: undefined,
@@ -15,8 +15,8 @@ test("defaults", () => {
 
 test("env overrides", () => {
   const c = loadConfig({
-    SEO_MCP_HOME: "/x",
-    SEO_MCP_ALLOW_WRITES: "true",
+    RANKLOOP_MCP_HOME: "/x",
+    RANKLOOP_MCP_ALLOW_WRITES: "true",
     GOOGLE_APPLICATION_CREDENTIALS: "/sa.json",
     PAGESPEED_API_KEY: "k",
   });
@@ -24,5 +24,5 @@ test("env overrides", () => {
 });
 
 test("only the exact string 'true' enables writes", () => {
-  assert.equal(loadConfig({ SEO_MCP_ALLOW_WRITES: "1" }).allowWrites, false);
+  assert.equal(loadConfig({ RANKLOOP_MCP_ALLOW_WRITES: "1" }).allowWrites, false);
 });

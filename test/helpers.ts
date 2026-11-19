@@ -9,14 +9,14 @@ import { loadConfig } from "../src/config.ts";
 import { openDb } from "../src/db.ts";
 import { createServer, type Ctx } from "../src/server.ts";
 
-process.env.SEO_MCP_RETRY_BASE_MS = "0";
+process.env.RANKLOOP_MCP_RETRY_BASE_MS = "0";
 
 export const fakeToken = async (): Promise<string> => "test-token";
 
 /** Isolated config + db in a temp dir. Env is only what you pass, never process.env. */
 export function tempCtx(env: Record<string, string> = {}) {
-  const home = mkdtempSync(join(tmpdir(), "seo-mcp-"));
-  const config = loadConfig({ SEO_MCP_HOME: home, ...env });
+  const home = mkdtempSync(join(tmpdir(), "rankloop-mcp-"));
+  const config = loadConfig({ RANKLOOP_MCP_HOME: home, ...env });
   const db = openDb(home);
   return {
     config,

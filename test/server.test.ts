@@ -16,7 +16,7 @@ test("setup_check without credentials says how to authenticate", async () => {
     assert.deepEqual(report.scopes, []);
     assert.equal(report.writesEnabled, false);
     assert.deepEqual(report.optional, { PAGESPEED_API_KEY: false });
-    assert.match(report.next, /npx seo-mcp auth/);
+    assert.match(report.next, /npx rankloop-mcp auth/);
   } finally {
     await client.close();
     ctx.cleanup();

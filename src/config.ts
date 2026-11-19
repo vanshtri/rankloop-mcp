@@ -10,8 +10,8 @@ export type Config = {
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   return {
-    home: env.SEO_MCP_HOME || join(homedir(), ".seo-mcp"),
-    allowWrites: env.SEO_MCP_ALLOW_WRITES === "true",
+    home: env.RANKLOOP_MCP_HOME || join(homedir(), ".rankloop-mcp"),
+    allowWrites: env.RANKLOOP_MCP_ALLOW_WRITES === "true",
     serviceAccountFile: env.GOOGLE_APPLICATION_CREDENTIALS || undefined,
     pagespeedKey: env.PAGESPEED_API_KEY || undefined,
   };

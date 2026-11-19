@@ -58,7 +58,7 @@ export function registerGoogleTools(server: McpServer, ctx: Ctx): void {
   server.registerTool(
     "gsc_sitemaps",
     {
-      description: "List, submit or delete sitemaps for a Search Console property. submit/delete need SEO_MCP_ALLOW_WRITES=true.",
+      description: "List, submit or delete sitemaps for a Search Console property. submit/delete need RANKLOOP_MCP_ALLOW_WRITES=true.",
       inputSchema: {
         siteUrl: siteUrlArg,
         action: z.enum(["list", "submit", "delete"]).default("list"),
@@ -107,7 +107,7 @@ export function registerGoogleTools(server: McpServer, ctx: Ctx): void {
     "ga4_admin",
     {
       description:
-        "GA4 configuration. list_properties needs no propertyId. create_* actions need SEO_MCP_ALLOW_WRITES=true and default to dryRun. create_annotation marks a date on GA4 charts (e.g. when SEO fixes shipped).",
+        "GA4 configuration. list_properties needs no propertyId. create_* actions need RANKLOOP_MCP_ALLOW_WRITES=true and default to dryRun. create_annotation marks a date on GA4 charts (e.g. when SEO fixes shipped).",
       inputSchema: {
         action: z.enum([
           "list_properties",
